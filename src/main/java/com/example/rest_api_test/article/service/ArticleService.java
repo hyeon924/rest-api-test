@@ -12,7 +12,9 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class ArticleService {    private final ArticleRepository articleRepository;
+public class ArticleService {
+    private final ArticleRepository articleRepository;
+
     // 다건 게시글 조회
     public List<ArticleDTO> getList() {
         List<Article> articleList = this.articleRepository.findAll(); // 전체 조회
@@ -21,9 +23,21 @@ public class ArticleService {    private final ArticleRepository articleReposito
                 .collect(Collectors.toList());
         return articleDTOList;
     }
+
     // 단건 게시글 조회
     public ArticleDTO getArticle(Long id) {
         Optional<Article> optionalArticle = this.articleRepository.findById(id); // 아이디 조회
         return optionalArticle.map(article -> new ArticleDTO(article)).orElse(null);
     }
-    }
+
+//    등록
+public Article write(String content, String subject) {
+    Article article = Article.builder()
+            .subject(subject)
+            .content(content)
+            .build();
+    this.articleRepository.save(article);
+    return article;
+}
+
+}

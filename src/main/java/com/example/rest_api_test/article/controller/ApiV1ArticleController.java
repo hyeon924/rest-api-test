@@ -1,8 +1,10 @@
 package com.example.rest_api_test.article.controller;
 
 import com.example.rest_api_test.article.dto.ArticleDTO;
+import com.example.rest_api_test.article.entity.Article;
 import com.example.rest_api_test.article.request.ArticleCreateRequest;
 import com.example.rest_api_test.article.request.ArticleModifyRequest;
+import com.example.rest_api_test.article.response.ArticleCreateResponse;
 import com.example.rest_api_test.article.response.ArticleResponse;
 import com.example.rest_api_test.article.response.ArticlesResponse;
 import com.example.rest_api_test.article.service.ArticleService;
@@ -38,9 +40,9 @@ public class ApiV1ArticleController {
 
     //    등록
     @PostMapping("")
-    public String create(@Valid @RequestBody ArticleCreateRequest articleCreateRequest) {
-
-        return "등록완료";
+    public RsData<ArticleCreateResponse> create(@Valid @RequestBody ArticleCreateRequest articleCreateRequest) {
+        Article article = this.articleService.write(articleCreateRequest.getSubject(), articleCreateRequest.getContent());
+        return RsData.of("200", "등록성공", new ArticleCreateResponse(article));
     }
 
     //    수정
