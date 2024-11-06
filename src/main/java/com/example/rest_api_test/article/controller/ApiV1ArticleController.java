@@ -2,10 +2,12 @@ package com.example.rest_api_test.article.controller;
 
 import com.example.rest_api_test.article.dto.ArticleDTO;
 import com.example.rest_api_test.article.entity.Article;
+import com.example.rest_api_test.article.request.ArticleCreateRequest;
 import com.example.rest_api_test.article.response.ArticleResponse;
 import com.example.rest_api_test.article.response.ArticlesResponse;
 import com.example.rest_api_test.article.service.ArticleService;
 import com.example.rest_api_test.global.RsData.RsData;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -42,9 +44,10 @@ public class ApiV1ArticleController {
 
     //    등록
     @PostMapping("")
-    public String create(@RequestParam("subject") String subject, @RequestParam("content") String content) {
-        System.out.println(subject);
-        System.out.println(content);
+    public String create(@Valid @RequestBody ArticleCreateRequest articleCreateRequest) {
+        System.out.println(articleCreateRequest.getSubject());
+        System.out.println(articleCreateRequest.getContent());
+
         return "등록완료";
     }
 
