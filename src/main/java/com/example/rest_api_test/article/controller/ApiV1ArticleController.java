@@ -25,29 +25,18 @@ public class ApiV1ArticleController {
 //    다건조회
     @GetMapping("")
     public RsData<ArticlesResponse> list() {
-        List<ArticleDTO> articleList = new ArrayList<>();
-        Article article1 = new Article("title01", "content01");
-        articleList.add(new ArticleDTO(article1));
-        Article article2 = new Article("title02", "content02");
-        articleList.add(new ArticleDTO(article2));
-        Article article3 = new Article("title03", "content03");
-        articleList.add(new ArticleDTO(article3));
         return RsData.of("200", "게시글 다건 조회 성공", new ArticlesResponse(articleList));
     }
 
     //    단건조회
     @GetMapping("/{id}")
     public RsData<ArticleResponse> getArticle(@PathVariable("id") Long id) {
-        Article article = new Article("title", "content");
-        ArticleDTO articleDTO = new ArticleDTO(article);
         return RsData.of("200", "게시글 단건 조회 성공", new ArticleResponse(articleDTO));
     }
 
     //    등록
     @PostMapping("")
     public String create(@Valid @RequestBody ArticleCreateRequest articleCreateRequest) {
-        System.out.println(articleCreateRequest.getSubject());
-        System.out.println(articleCreateRequest.getContent());
 
         return "등록완료";
     }
@@ -55,16 +44,14 @@ public class ApiV1ArticleController {
     //    수정
     @PatchMapping("/{id}")
     public String modify(@PathVariable("id") Long id, @Valid @RequestBody ArticleModifyRequest articleModifyRequest) {
-        System.out.println(id);
-        System.out.println(articleModifyRequest.getSubject());
-        System.out.println(articleModifyRequest.getContent());
+
         return "수정완료";
     }
 
     //    삭제는 단순 삭제로 구현
     @DeleteMapping("/{id}")
     public String delete(@PathVariable("id") Long id) {
-        System.out.println(id);
+
         return "삭제완료";
     }
 }
