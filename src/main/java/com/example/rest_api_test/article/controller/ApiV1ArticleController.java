@@ -1,7 +1,6 @@
 package com.example.rest_api_test.article.controller;
 
 import com.example.rest_api_test.article.dto.ArticleDTO;
-import com.example.rest_api_test.article.entity.Article;
 import com.example.rest_api_test.article.request.ArticleCreateRequest;
 import com.example.rest_api_test.article.request.ArticleModifyRequest;
 import com.example.rest_api_test.article.response.ArticleResponse;
@@ -12,7 +11,6 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -25,12 +23,16 @@ public class ApiV1ArticleController {
 //    다건조회
     @GetMapping("")
     public RsData<ArticlesResponse> list() {
+        List<ArticleDTO> articleList = this.articleService.getList();
+
         return RsData.of("200", "게시글 다건 조회 성공", new ArticlesResponse(articleList));
     }
 
     //    단건조회
     @GetMapping("/{id}")
     public RsData<ArticleResponse> getArticle(@PathVariable("id") Long id) {
+        ArticleDTO  articleDTO = this.articleService.getArticle(id);
+
         return RsData.of("200", "게시글 단건 조회 성공", new ArticleResponse(articleDTO));
     }
 
