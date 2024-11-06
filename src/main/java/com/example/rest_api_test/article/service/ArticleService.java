@@ -48,4 +48,9 @@ public Article update(Article article, String content, String subject) {
     return article;
 }
 
+// 삭제
+public void delete(Article article) {
+    this.articleRepository.delete(article);
+}
+
 }
