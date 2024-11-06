@@ -25,9 +25,9 @@ public class ArticleService {
     }
 
     // 단건 게시글 조회
-    public ArticleDTO getArticle(Long id) {
+    public Article getArticle(Long id) {
         Optional<Article> optionalArticle = this.articleRepository.findById(id); // 아이디 조회
-        return optionalArticle.map(article -> new ArticleDTO(article)).orElse(null);
+        return optionalArticle.orElse(null);
     }
 
 //    등록
@@ -36,6 +36,14 @@ public Article write(String content, String subject) {
             .subject(subject)
             .content(content)
             .build();
+    this.articleRepository.save(article);
+    return article;
+}
+
+// 수정
+public Article update(Article article, String content, String subject) {
+    article.setSubject(subject);
+    article.setContent(content);
     this.articleRepository.save(article);
     return article;
 }

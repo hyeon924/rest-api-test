@@ -5,6 +5,7 @@ import com.example.rest_api_test.article.entity.Article;
 import com.example.rest_api_test.article.request.ArticleCreateRequest;
 import com.example.rest_api_test.article.request.ArticleModifyRequest;
 import com.example.rest_api_test.article.response.ArticleCreateResponse;
+import com.example.rest_api_test.article.response.ArticleModifyResponse;
 import com.example.rest_api_test.article.response.ArticleResponse;
 import com.example.rest_api_test.article.response.ArticlesResponse;
 import com.example.rest_api_test.article.service.ArticleService;
@@ -33,7 +34,8 @@ public class ApiV1ArticleController {
     //    단건조회
     @GetMapping("/{id}")
     public RsData<ArticleResponse> getArticle(@PathVariable("id") Long id) {
-        ArticleDTO  articleDTO = this.articleService.getArticle(id);
+        Article  article = this.articleService.getArticle(id);
+        ArticleDTO articleDTO = new ArticleDTO(article);
 
         return RsData.of("200", "게시글 단건 조회 성공", new ArticleResponse(articleDTO));
     }
@@ -47,9 +49,15 @@ public class ApiV1ArticleController {
 
     //    수정
     @PatchMapping("/{id}")
-    public String modify(@PathVariable("id") Long id, @Valid @RequestBody ArticleModifyRequest articleModifyRequest) {
-
-        return "수정완료";
+    public RsData<ArticleModifyResponse> modify(@PathVariable("id") Long id, @Valid @RequestBody ArticleModifyRequest articleModifyRequest) {
+        Article article = this.articleService.getArticle(id);
+        if (article == null) return RsData.of(
+                "500",
+                "%d 번 게시물은 존재하지 않습니다.".formatted(id),
+                null
+        );
+        article = this.articleService.update(article, articleModifyRequest.getSubject(), articleModifyRequest.getContent());
+        return RsData.of("200", "수정성공", new ArticleModifyResponse(article));
     }
 
     //    삭제는 단순 삭제로 구현
