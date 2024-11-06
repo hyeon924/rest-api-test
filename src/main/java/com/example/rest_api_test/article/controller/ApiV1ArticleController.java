@@ -61,7 +61,7 @@ public class ApiV1ArticleController {
         return "수정완료";
     }
 
-    //    삭제
+    //    삭제는 단순 삭제로 구현
     @DeleteMapping("/{id}")
     public String delete(@PathVariable("id") Long id) {
         System.out.println(id);
